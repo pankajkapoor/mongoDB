@@ -1,5 +1,4 @@
-*MONGODB CONVERT "JSON" FORMAT TO ANOTHER FORMAT FOR STORING, CALLED "BSON" (it is binary version of json and can queried more efficiently)*
-
+ - MONGODB CONVERT "JSON" FORMAT TO ANOTHER FORMAT FOR STORING, CALLED "BSON" (it is binary version of json and can queried more efficiently)
  - Default Storage Engine is "Wired Tiger"
  - Storage Engine loads a chunk of data into memory and manages to store the data in memory that is used frequently.
  - No Schema
@@ -14,21 +13,6 @@ db.flightData.update({_id:ObjectId("5da7ab9862623af364fe2d43")},{delayed: false}
 ```
 > (if $set is not used) : this command will replace the entire document with the second parameter, but the _id remains the same. But updateOne will not work without $set.
 
-```js
-{
-	"_id" : ObjectId("5da99d383082c289904c82e8"),
-	"name" : "Albert Twostone",
-	"age" : 68,
-	"hobbies" : [
-		"sports",
-		"cooking"
-	]
-}
-
-db.passengers.findOne({hobbies: "sports"});    
-/* (mongoDB automatically check that "sports" is present in hobbies array 
-and then return that docement) */
-```
 
 ## DATA TYPES IN MONGODB
 
@@ -68,95 +52,6 @@ db.books.aggregate([{$lookup:{
 }}]);
 ```
 
-## Schema Validation
-```js
-
-db.createCollection('posts', {
-  validator: {
-    $jsonSchema: {
-      bsonType: 'object',
-      required: ['title', 'text', 'creator', 'comments'],
-      properties: {
-        title: {
-          bsonType: 'string',
-          description: 'must be a string and is required'
-        },
-        text: {
-          bsonType: 'string',
-          description: 'must be a string and is required'
-        },
-        creator: {
-          bsonType: 'objectId',
-          description: 'must be an objectid and is required'
-        },
-        comments: {
-          bsonType: 'array',
-          description: 'must be an array and is required',
-          items: {
-            bsonType: 'object',
-            required: ['text', 'author'],
-            properties: {
-              text: {
-                bsonType: 'string',
-                description: 'must be a string and is required'
-              },
-              author: {
-                bsonType: 'objectId',
-                description: 'must be an objectid and is required'
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-});
-
-# Modifing collecion usind runCommand and collMod(collecion modifier)
-
-db.runCommand({
-  collMod: 'posts',
-  validator: {
-    $jsonSchema: {
-      bsonType: 'object',
-      required: ['title', 'text', 'creator', 'comments'],
-      properties: {
-        title: {
-          bsonType: 'string',
-          description: 'must be a string and is required'
-        },
-        text: {
-          bsonType: 'string',
-          description: 'must be a string and is required'
-        },
-        creator: {
-          bsonType: 'objectId',
-          description: 'must be an objectid and is required'
-        },
-        comments: {
-          bsonType: 'array',
-          description: 'must be an array and is required',
-          items: {
-            bsonType: 'object',
-            required: ['text', 'author'],
-            properties: {
-              text: {
-                bsonType: 'string',
-                description: 'must be a string and is required'
-              },
-              author: {
-                bsonType: 'objectId',
-                description: 'must be an objectid and is required'
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  validationAction: 'warn'
-});
-```
 
 ## mongod flags:
 
@@ -171,8 +66,6 @@ sudo mongod --config (-f) "path to config file"
 help command inside mongo shell                                                                    
 ```
 
-
-
 ## IMPORTING DATA TO MONGODB FROM A JSON FILE
 
 ```html
@@ -183,5 +76,6 @@ Query: mongoimport <path to json file> -d <DATABASE NAME> -c <COLLECTION NAME> -
         --jsonArray => tell mongodb that the data is a jsonArray
         --drop => it will drop the collection if it already exist 
 ```                                                     
+
 
 
